@@ -8,16 +8,18 @@ import {
     Text,
     View,
     Image,
-    ScrollView
+    ScrollView,
+    Dimensions
 } from 'react-native';
 
-const ForecastList = require('./componets/forecastList');
+import {storage} from './components/Store';
+import {ForecastList} from './components/forecastList';
+const Suggestion = require('./components/Suggestion');
+
+let cityid = 'CN101010100';
 
 var Weather = React.createClass({
     getInitialState(){
-        let key = 'bd7a9faf17f449b7a3bd622eee3e4f87';
-        this.URL = 'https://api.heweather.com/x3/weather?cityid=CN101010100&key='+key;
-
         return {
             data: {},
             loaded: false
@@ -29,15 +31,16 @@ var Weather = React.createClass({
     },
 
     fetchData(){
-        fetch(this.URL)
-            .then((response) => response.json())
-            .then((responseData) => {
-                this.setState({
-                    data: responseData,
-                    loaded: true
-                });
-            })
-            .done();
+        let hour = new Date().getHours();
+        storage.load({
+            key: 'weather',
+            id: cityid+"."+hour
+        }).then(ret => {
+            this.setState({
+                data: ret,
+                loaded: true
+            });
+        });
     },
 
     render: function () {
@@ -45,43 +48,52 @@ var Weather = React.createClass({
         let tmp = "";
         let wea = "";
         let daily_forecast = [];
+        let suggestion = {};
+        let w_icon = 999;
+        let city = "";
         for(let a in heData){
             let data = heData[a];
             data = data.length ? data[0] : null;
             if(data){
                 let update = data.basic.update;
+                city = data.basic.city;
                 let now = data.now;
                 tmp = now.tmp;
                 wea = now.cond.txt;
+                w_icon = now.cond.code;
                 daily_forecast = data.daily_forecast;
+                suggestion = data.suggestion;
             }
         }
 
+        w_icon = "http://www.heweather.com/weather/images/icon/"+w_icon+".png";
+
         return (
-            <ScrollView showsVerticalScrollIndicator={true}>
-                <View style = {styles.container}>
-                    <Image style={styles.bgImage} source={require('./images/bg2.png')}>
-                        <View style={styles.top}>
-                            <View style={styles.topWrap}>
-                                <View style={styles.weatherImgWrap}>
-                                    <Image style={styles.weatherImg} source={require('./images/w_1.png')} />
-                                </View>
-                                <View style={styles.citywrap}>
-                                    <Text style={styles.city}>BeiJing</Text>
-                                    <Text style={styles.weather}>{wea}</Text>
-                                    <Text style={styles.tempreture}>{tmp}°</Text>
-                                </View>
+            <Image style={[styles.bgImage,{width: Dimensions.get('window').width}]} source={require('./images/bg2.png')}>
+                <ScrollView showsVerticalScrollIndicator={true} removeClippedSubviews={false}>
+                    <View style={styles.top}>
+                        <View style={styles.topWrap}>
+                            <View style={styles.weatherImgWrap}>
+                                <Image style={styles.weatherImg} source={{uri: w_icon}} />
                             </View>
-                            <View style={styles.cityBg}>
-                                <Image style={{width: 375}} source={require('./images/city-bg.png')}/>
+                            <View style={styles.citywrap}>
+                                <Text style={styles.city}>{city}</Text>
+                                <Text style={styles.weather}>{wea}</Text>
+                                <Text style={styles.tempreture}>{tmp}°</Text>
                             </View>
                         </View>
-                        <View style={styles.list}>
-                            <ForecastList data={daily_forecast}/>
+                        <View style={styles.cityBg}>
+                            <Image style={{width: 375}} source={require('./images/city-bg.png')}/>
                         </View>
-                    </Image>
-                </View>
-            </ScrollView>
+                    </View>
+                    <View style={styles.list}>
+                        <ForecastList data={daily_forecast}/>
+                    </View>
+
+                    <Suggestion data={suggestion}/>
+                    <View style={{height: 70}}/>
+                </ScrollView>
+            </Image>
         );
     }
 });
@@ -116,15 +128,9 @@ var styles = StyleSheet.create({
         alignItems: 'flex-end',
         paddingRight: 50
     },
-    container: {
-        flex: 1,
-        overflow: 'hidden'
-    },
     bgImage: {
-        flex: 1,
-        width: 375,
-        resizeMode: Image.resizeMode.contain,
-        flexDirection: 'column'
+        top: 0,
+        left: 0
     },
     city: {
         fontSize: 20,
