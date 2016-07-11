@@ -33,7 +33,6 @@ var Tile = React.createClass({
 var styles = StyleSheet.create({
     tile: {
         backgroundColor: 'rgba(99,140,170,0.5)',
-        flex: 1,
         flexDirection: 'column',
         marginTop: 10,
         marginBottom: 10

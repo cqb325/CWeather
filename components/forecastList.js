@@ -39,6 +39,7 @@ var ForecastList = React.createClass({
             date = date_arr[1]+"/"+date_arr[2];
             let tmp = dayData.tmp;
             let cond = dayData.cond;
+            let wind = dayData.wind;
             let d_w = "http://www.heweather.com/weather/images/icon/"+cond.code_d+".png";
             let n_w = "http://www.heweather.com/weather/images/icon/"+cond.code_n+".png";
             return (
@@ -51,6 +52,8 @@ var ForecastList = React.createClass({
                     <Text style={styles.temperature}>{tmp.min}°</Text>
                     <Image source={{uri: n_w}} style={styles.icon}/>
                     <Text style={styles.txt_d}>{cond.txt_n}</Text>
+                    <Text style={styles.txt_d}>{wind.dir}</Text>
+                    <Text style={styles.txt_d}>{wind.sc}</Text>
                 </View>
             );
         });
@@ -75,9 +78,7 @@ var styles = StyleSheet.create({
     },
     cell: {
         flex: 1,
-        width: 60,
-        paddingLeft: 10,
-        paddingRight: 10,
+        width: 70,
         paddingTop: 10,
         paddingBottom: 10,
         alignItems: 'center',

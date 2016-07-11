@@ -49,14 +49,14 @@ var Suggestion = React.createClass({
             return (
                     [<View style={styles.row} key="1">
                         <View style={styles.cell}>
-                            <IonIcon name="ios-sunny" size="{35}" color="#fff"/>
+                            <IonIcon name="ios-sunny" size={35} color="#fff"/>
                             <View>
                                 <Text style={[styles.text, styles.important]}>{uv ? uv.brf : '--'}</Text>
                                 <Text style={styles.text}>紫外线</Text>
                             </View>
                         </View>
                         <View style={styles.cell}>
-                            <Image style={styles.icon} source={require('../images/suggestions_02.png')} />
+                            <IonIcon name="ios-plane" size={35} color="#fff"/>
                             <View>
                                 <Text style={[styles.text, styles.important]}>{trav ? trav.brf : '--'}</Text>
                                 <Text style={styles.text}>旅游</Text>
@@ -65,14 +65,14 @@ var Suggestion = React.createClass({
                     </View>,
                     <View style={styles.row} key="2">
                         <View style={styles.cell}>
-                            <Image style={styles.icon} source={require('../images/suggestions_03.png')} />
+                            <IonIcon name="ios-shirt" size={35} color="#fff"/>
                             <View>
                                 <Text style={[styles.text, styles.important]}>{drsg ? drsg.brf : '--'}</Text>
                                 <Text style={styles.text}>穿衣</Text>
                             </View>
                         </View>
                         <View style={styles.cell}>
-                            <Image style={styles.icon} source={require('../images/suggestions_04.png')} />
+                            <IonIcon name="ios-car" size={35} color="#fff"/>
                             <View>
                                 <Text style={[styles.text, styles.important]}>{cw ? cw.brf : '--'}</Text>
                                 <Text style={styles.text}>洗车</Text>
@@ -81,14 +81,14 @@ var Suggestion = React.createClass({
                     </View>,
                     <View style={styles.row} key="3">
                         <View style={styles.cell}>
-                            <Image style={styles.icon} source={require('../images/suggestions_05.png')} />
+                            <IonIcon name="ios-basketball" size={35} color="#fff"/>
                             <View>
                                 <Text style={[styles.text, styles.important]}>{sport ? sport.brf : '--'}</Text>
                                 <Text style={styles.text}>运动</Text>
                             </View>
                         </View>
                         <View style={styles.cell}>
-                            <Image style={styles.icon} source={require('../images/suggestions_06.png')} />
+                            <IonIcon name="md-medical" size={35} color="#fff"/>
                             <View>
                                 <Text style={[styles.text, styles.important]}>{flu ? flu.brf : '--'}</Text>
                                 <Text style={styles.text}>感冒</Text>
