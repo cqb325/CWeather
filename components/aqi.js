@@ -84,7 +84,6 @@ var aqi_styles = StyleSheet.create({
     },
     tile2: {
         backgroundColor: 'rgba(99,140,170,0.5)',
-        marginTop: 10,
         marginBottom: 10
     },
     header2: {

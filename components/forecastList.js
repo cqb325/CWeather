@@ -33,8 +33,13 @@ var ForecastList = React.createClass({
 
     renderForecastData(){
         let data = this.state.data;
+        let days = ["日","一","二","三","四","五","六"];
+
         return data.map(function(dayData, index){
             let date = dayData.date;
+            let dateObj = new Date(date);
+            let weekday = dateObj.getDay();
+
             let date_arr = date.split("-");
             date = date_arr[1]+"/"+date_arr[2];
             let tmp = dayData.tmp;
@@ -44,7 +49,7 @@ var ForecastList = React.createClass({
             let n_w = "http://www.heweather.com/weather/images/icon/"+cond.code_n+".png";
             return (
                 <View style={styles.cell} key={index}>
-                    <Text style={styles.temperature}>周一</Text>
+                    <Text style={styles.temperature}>{"周"+days[weekday]}</Text>
                     <Text style={styles.temperature}>{date}</Text>
                     <Text style={styles.txt_d}>{cond.txt_d}</Text>
                     <Image source={{uri: d_w}} style={styles.icon}/>
