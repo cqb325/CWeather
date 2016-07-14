@@ -23,7 +23,7 @@ var SplashScreen = React.createClass({
 
     componentDidMount: function () {
         Animated.timing(
-            this.state.bounceValue, {toValue: 1.2, duration: 3000}
+            this.state.bounceValue, {toValue: 1.2, duration: 2000}
         ).start();
     },
 

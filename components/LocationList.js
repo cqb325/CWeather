@@ -16,24 +16,19 @@ import {
 } from 'react-native';
 
 const shallowEqual = require('./shallowEqual');
+import Storage from 'react-native-storage';
+
+var LocalStorage = new Storage();
 
 var LocationList = React.createClass({
     getInitialState: function() {
         var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => {let ret = shallowEqual(r1, r2); console.log(ret);return ret;}});
         this._ds = ds;
-        this.data = this._genRows();
-        this._rebuildData();
+        this.data = [];
         return {
             pressed: null,
             dataSource: ds.cloneWithRows(this.data)
         };
-    },
-
-    _genRows(){
-        return [
-            {id: "1", text: "北京市"},
-            {id: "2", text: "杭州市"}
-        ];
     },
 
     _rebuildData(){
@@ -73,6 +68,10 @@ var LocationList = React.createClass({
             pressed: theOne,
             dataSource: this._ds.cloneWithRows(this.data)
         });
+
+        if(this.props.gotoPage){
+            this.props.gotoPage(rowID);
+        }
     },
 
     _renderSeperator(sectionID, rowID, adjacentRowHighlighted){
@@ -85,6 +84,53 @@ var LocationList = React.createClass({
                 }}
             />
         );
+    },
+
+    componentDidMount(){
+        LocalStorage.save({
+            key: 'cities',
+            id: 'CN101210101',
+            rawData: {id: "CN101210101", text: "杭州"}
+        });
+        LocalStorage.getAllDataForKey('cities').then((ret)=>{
+            this.data = ret;
+            this._rebuildData();
+            this.setState({
+                dataSource: this._ds.cloneWithRows(this.data)
+            });
+        });
+    },
+
+    addCity(city){
+        if(!this._map[city.id]){
+            this.data.push(city);
+            this._map[city.id] = city;
+            LocalStorage.save({
+                key: 'cities',
+                id: city.id,
+                rawData: city
+            });
+
+            this.setState({
+                dataSource: this._ds.cloneWithRows(this.data)
+            });
+        }
+    },
+
+    removeCity(id){
+        delete this._map[id];
+        this.data.forEach((item, index)=>{
+            if(item.id === id){
+                this.data.splice(index, 1);
+            }
+        });
+        LocalStorage.remove({
+            key: 'cities',
+            id: city.id
+        });
+        this.setState({
+            dataSource: this._ds.cloneWithRows(this.data)
+        });
     },
 
     render(){
