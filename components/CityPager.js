@@ -10,6 +10,7 @@ import {
     View,
     Dimensions,
     Image,
+    ScrollView
 } from 'react-native';
 
 import {storage} from './Store';
@@ -77,8 +78,7 @@ var CityPager = React.createClass({
             <ScrollView showsVerticalScrollIndicator={true} removeClippedSubviews={false}
                         style={styles.scrollview}>
                 <View style={styles.top}>
-                    <IonIcon.Button onPress={this.openSetting} style={styles.menuIcon} name="ios-menu"
-                                    backgroundColor="transparent"/>
+                    <Image style={styles.cityImage} source={require('../images/bg4.png')}/>
                     <View style={styles.topWrap}>
                         <View style={styles.weatherImgWrap}>
                             <Image style={styles.weatherImg} source={{uri: w_icon}}/>
@@ -89,7 +89,6 @@ var CityPager = React.createClass({
                             <Text style={styles.tempreture}>{tmp}°</Text>
                         </View>
                     </View>
-                    <Image style={styles.cityImage} source={require('../images/city-bg.png')}/>
                 </View>
 
                 <AQI data={hourly_forecast}/>
@@ -113,16 +112,20 @@ var styles = StyleSheet.create({
     },
     top: {
         flexDirection: 'column',
+        overflow: 'hidden',
         height: Dimensions.get('window').height - 25
     },
     topWrap: {
         flex: 1,
         flexDirection: 'row',
+        paddingTop: 30,
         alignSelf: 'flex-start'
     },
     cityImage: {
+        position: 'absolute',
+        top: 0,
         width: Dimensions.get('window').width,
-        height: Dimensions.get('window').width * 147/414
+        height: Dimensions.get('window').width * 1600/900
     },
     list: {
         backgroundColor: 'transparent'

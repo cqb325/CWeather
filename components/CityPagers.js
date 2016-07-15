@@ -5,7 +5,8 @@
 
 import React from 'react';
 import {
-    StyleSheet
+    StyleSheet,
+    View
 } from 'react-native';
 
 import ViewPager from 'react-native-viewpager';
@@ -26,7 +27,13 @@ var CityPagers = React.createClass({
     },
 
     gotoPage(num){
-        this.refs.viewPage.goToPage(num);
+        this.refs.viewPage.goToPage(num, false);
+    },
+
+    openSetting(){
+        if(this.props.openSetting) {
+            this.props.openSetting();
+        }
     },
 
     render: function() {
@@ -36,13 +43,17 @@ var CityPagers = React.createClass({
                        dataSource={this.state.dataSource}
                        renderPage={this._renderPage}
                        isLoop={false}
-                       autoPlay={false}/>
+                       autoPlay={false}
+                       openSetting={this.openSetting}
+                />
         );
     },
 
     _renderPage: function(data, pageID) {
         return (
-            <CityPager city={data}/>
+            <View style={{flex: 1}}>
+                <CityPager city={data}/>
+            </View>
         );
     }
 });
