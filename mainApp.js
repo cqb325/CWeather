@@ -81,6 +81,9 @@ var Weather = React.createClass({
             view: "main"
         });
         this.refs.locationList.addCity(city);
+        timer.setTimeout(this, 'pages',()=>{
+            this.refs.pages.addCity(city);
+        }, 0);
     },
 
     gotoPage(pageNum){

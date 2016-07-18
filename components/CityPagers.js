@@ -18,12 +18,21 @@ var CityPagers = React.createClass({
             pageHasChanged: (p1, p2) => p1.id !== p2.id
         });
 
+        this.ds = dataSource;
+
         this.cityData = this.props.cityData;
 
         return {
             loaded: false,
             dataSource: dataSource.cloneWithPages(this.cityData)
         };
+    },
+
+    addCity(city){
+        this.cityData.push(city);
+        this.setState({
+            dataSource: this.ds.cloneWithPages(this.cityData)
+        });
     },
 
     gotoPage(num){
